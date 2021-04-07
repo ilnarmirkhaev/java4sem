@@ -1,18 +1,17 @@
 package javafxexamples;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MessengerInterface extends Application {
@@ -21,6 +20,7 @@ public class MessengerInterface extends Application {
         primaryStage.setTitle("Интерфейс мессенджера");
 
         Parent ui = createInterface();
+        ui.prefHeight(primaryStage.getHeight());
 
         primaryStage.setScene(new Scene(ui, 800, 600));
         primaryStage.show();
@@ -28,34 +28,48 @@ public class MessengerInterface extends Application {
 
     private Parent createInterface() {
         HBox ui = new HBox();
+
+        HBox.setHgrow(ui, Priority.ALWAYS);
         ui.setPrefHeight(600);
-        ui.setFillHeight(true);
+//        ui.setFillHeight(true);
 
         // Chat
         VBox chat = new VBox();
+        chat.prefHeightProperty().bind(ui.heightProperty());
 
-        Text text = new Text("Ну привет");
+        TextArea showText = new TextArea();
+        showText.setEditable(false);
 
-        TextField textArea = new TextField();
-        textArea.promptTextProperty().setValue("Введите сообщение...");
+        TextField enterText = new TextField();
+        Platform.runLater(enterText::requestFocus);
+        enterText.promptTextProperty().setValue("Введите сообщение...");
+
         Button sendButton = new Button("Отправить");
-        sendButton.setOnAction(event -> {
-            String textFromUser = textArea.getText();
-            text.setText(textFromUser);
-            textArea.clear();
+        sendButton.setMinSize(100, 30);
+        sendButton.setMaxSize(100, 30);
+
+        sendButton.setOnAction(event -> sendMessage(enterText, showText));
+
+        enterText.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                sendMessage(enterText, showText);
         });
 
-        HBox yourMessage = new HBox(textArea, sendButton);
+        HBox yourMessage = new HBox(enterText, sendButton);
+        enterText.prefWidthProperty().bind(yourMessage.widthProperty());
+        enterText.prefHeightProperty().bind(yourMessage.heightProperty());
 
         chat.getChildren().addAll(
-                text,
+                showText,
                 yourMessage
         );
 
         // Contacts
         VBox contacts = new VBox();
+        contacts.prefHeightProperty().bind(ui.heightProperty());
+        VBox.setVgrow(contacts, Priority.NEVER);
         contacts.setAlignment(Pos.TOP_CENTER);
-        contacts.setFillWidth(true);
+//        contacts.setFillWidth(true);
 
         Label contactsLabel = new Label("Контакты");
 
@@ -76,5 +90,16 @@ public class MessengerInterface extends Application {
         );
 
         return ui;
+    }
+
+    private void sendMessage(TextField enterText, TextArea showText) {
+        String textFromUser = enterText.getText().strip();
+        if (textFromUser.length() > 0) {
+            if (showText.getText().length() > 0)
+                showText.setText(showText.getText() + "\n" + textFromUser);
+            else
+                showText.setText(textFromUser);
+        }
+        enterText.clear();
     }
 }
