@@ -11,7 +11,6 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -48,14 +47,14 @@ public class ColoredCircleOnColoredBackground extends Application {
         row1.setVgrow(Priority.ALWAYS);
         mainGridPane.getRowConstraints().add(row1);
 
-        // circleSettings
-        // Style
+        // CIRCLE SETTINGS
+        // Style:
         circleSettings.setStyle("-fx-background-color: lightgrey;" +
                 "-fx-padding: 20px;" +
                 "-fx-font-size: 20px;");
         circleSettings.setAlignment(Pos.TOP_CENTER);
 
-        // Adding elements
+        // Adding elements:
         // Radius slider
         Label radius = new Label("Радиус");
         Slider slider = new Slider(0, 100, Double.MIN_VALUE);
@@ -76,25 +75,13 @@ public class ColoredCircleOnColoredBackground extends Application {
 
         circleSettings.getChildren().addAll(radius, circleColor, backgroundColor);
 
-        // circleDisplay
-        // Style
-        circleDisplay.setBackground(new Background(new BackgroundFill(
-                Color.FORESTGREEN,
-                new CornerRadii(0),
-                Insets.EMPTY
-        )));
-
-        // Adding elements
+        // CIRCLE DISPLAY
+        // Adding circle:
         Circle circle = new Circle();
-
-        circle.setRadius(50);
-        circle.setCenterX(100);
-        circle.setCenterY(100);
-        circle.setFill(Color.CORAL);
 
         circleDisplay.getChildren().add(circle);
 
-        // Bindings
+        // Bindings:
         // radius
         circle.radiusProperty().bind(slider.valueProperty());
         // X and Y center position
