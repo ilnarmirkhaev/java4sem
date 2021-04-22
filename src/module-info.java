@@ -3,4 +3,5 @@ module java4sem {
     requires javafx.controls;
 
     opens javafxexamples;
+    opens fractals;
 }
