@@ -4,4 +4,5 @@ module java4sem {
 
     opens javafxexamples;
     opens fractals;
+    opens exam;
 }

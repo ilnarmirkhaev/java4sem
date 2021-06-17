@@ -10,7 +10,6 @@ public class GrayPalette implements Palette {
         зеленый должны быть в равных "концентрациях".
          */
         int a = (int)((1 - v) * 255);
-        System.out.println(a);
         /*
         (1 - v) инвертирует цвета, т.к. цвета представленные в int
         чем ближе к 0, тем бледнее (0 = белый),

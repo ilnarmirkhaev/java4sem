@@ -23,7 +23,7 @@ public class FractalDisplay extends Application {
         int h = 640;
         double x0 = -1.5;
         double y0 = 3.5;
-        double d = 0.5;
+        double d = 0.3;
         WritableImage fractalImage = new WritableImage(w, h);
         ImageView fractalView = new ImageView(fractalImage);
 
